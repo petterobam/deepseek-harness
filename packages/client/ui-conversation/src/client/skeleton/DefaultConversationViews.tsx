@@ -32,8 +32,12 @@ export function DefaultConversationViews({
     // the machine mirror, not this seed effect.
   }, [inputActions])
 
-  if (session.blank && conversationPhase(session, conversation) === 'blank') return null
   const viewId = view ?? active?.id
+  // Wind Buddy: a blank Session still renders an explicitly selected View, so
+  // the Conversation View strip is usable before the first turn. Chat keeps the
+  // upstream hero, which is why only a non-chat selection skips the short circuit.
+  if (session.blank && conversationPhase(session, conversation) === 'blank'
+    && (viewId === undefined || viewId === 'chat')) return null
   return (
     <div className={css.viewArea}>
       {viewId !== undefined && renderSlot('conversation.view', {

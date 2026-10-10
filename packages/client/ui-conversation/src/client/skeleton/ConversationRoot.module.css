@@ -27,8 +27,10 @@
   padding-bottom: 10px;
 }
 
-/* Blank Sessions retain navigation controls without conversation title or tabs. */
-.headerBlank {
+/* Blank Sessions retain navigation controls without conversation title or tabs.
+   Wind Buddy: a blank Session that still renders its View strip keeps the normal
+   header chrome, so the rule only applies while no tabs are present. */
+.headerBlank:where(:not(:has(.tabs))) {
   min-height: 0;
   padding-bottom: 0;
   border-bottom: none;
@@ -542,4 +544,14 @@ button.crumb:hover {
 .root[data-phase='settling'] .composerSeat,
 .embeddedBody[data-content-phase='settling'] .composerSeat {
   visibility: hidden;
+}
+
+/* Wind Buddy: a blank Session rendering a selected View owns the column, so the
+   hero-phase centering is neutralised and the hero/composer stack yields to it. */
+.root[data-phase='hero'] .scrollBody:has(.viewArea) {
+  justify-content: flex-start;
+}
+
+.scrollBody:has(.viewArea) .composerHero {
+  display: none;
 }
